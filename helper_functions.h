@@ -57,4 +57,3 @@ extern GtkWidget* find_child(GtkWidget* parent, const gchar* name);
  */
 extern GtkWidget* gtk_entry_with_name_new(gchar *name);
 
-#endif /* ADD_LABEL_HELPER_H_ */

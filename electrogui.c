@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>
-#include "electrotestgtk.h"
+#include "electrogui.h"
 #include "coupling_box.h"
 #include "helper_functions.h"
 #include "libresistance.h"
