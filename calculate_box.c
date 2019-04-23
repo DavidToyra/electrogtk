@@ -1,10 +1,9 @@
 #include <gtk/gtk.h>
-#include "electrogui.h"
-#include "helper_functions.h"
+#include "calculate_box.h"
+#include "voltage_box.h"
 #include "coupling_box.h"
-#include "libresistance.h"
-#include "libpower.h"
-#include "libcomponent.h"
+#include "helper_functions.h"
+#include "electrogui.h"
 
 
 GtkWidget* result_power;
@@ -30,11 +29,13 @@ void button_clicked (GtkWidget *button, struct gui_comp* gui) {
 
 	// Get Data
 	update_resistor_values((*gui).resistor_box, (*gui).resistor_values);
-	float voltage = get_voltage((*gui).voltage_box);
+	float voltage = atof(gtk_entry_get_text(GTK_ENTRY( (GtkWidget *)(*gui).voltage_box->voltage)));
 	char coupling;
-	if(get_coupling((*gui).coupling_box)){
+	if(strcmp(gtk_entry_get_text(GTK_ENTRY( (GtkWidget *)(*gui).coupling_box->coupling)), "S"))
+	{
 		coupling = 'S';
-	} else {
+	} else if (strcmp(gtk_entry_get_text(GTK_ENTRY( (GtkWidget *)(*gui).coupling_box->coupling)), "P"))
+	{
 		coupling = 'P';
 	}
 

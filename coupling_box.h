@@ -1,4 +1,12 @@
+#ifndef COUPLING_BOX_H_
+#define COUPLING_BOX_H_
 #include <gtk/gtk.h>
+#include "helper_functions.h"
+
+typedef struct{
+	GtkWidget* coupling;
+	GtkWidget* coupling_box;
+} Couplings;
 
 /**
  * @brief Constructor for the Resistor Coupling Gui part
@@ -9,14 +17,6 @@
  * @return GtkWidget* pointer to the new created Gui part.
  *
  */
-extern GtkWidget* coupling_box_new(void);
+extern Couplings* coupling_box_new(void);
+#endif
 
-/**
- * @brief Getter for mode of resistor coupling
- *
- * Function that queries the selected resitor coupling mode
- * in the gui and returns 1 for serial and 0 for parallel.
- *
- * @return 1 = serial, 0 = parallel
- */
-extern int get_coupling(GtkWidget* coupling_box);

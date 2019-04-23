@@ -1,4 +1,11 @@
-#include  <gtk/gtk.h>
+#ifndef ELECTROGUI_H_
+#define ELECTROGUI_H_
+#include <gtk/gtk.h>
+#include "coupling_box.h"
+#include "voltage_box.h"
+#include "libresistance.h"
+#include "libpower.h"
+#include "libcomponent.h"
 
 /**
  * @brief Struct with pointers to all gui and data parts
@@ -8,15 +15,15 @@
  * values.
  */
 struct gui_comp {
-	GtkWidget* voltage_box;
-	GtkWidget* coupling_box;
+	VoltageWidgets* voltage_box;
+	Couplings* coupling_box;
 	GtkWidget* resistor_box;
 	GtkWidget* calc_result_box;
 	float* resistor_values;
 };
-GtkWidget* voltage_box_new(void);
-GtkWidget* resistor_box_new(void);
-float get_voltage(GtkWidget* voltage_box);
+
+
 GtkWidget* resistor_box_new(void);
 gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array);
+#endif
 

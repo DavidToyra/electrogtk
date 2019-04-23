@@ -1,13 +1,11 @@
-#include <gtk/gtk.h>
+#include "electrogui.h"
 #include <stdio.h>
 #include <string.h>
-#include "electrogui.h"
-#include "coupling_box.h"
 #include "helper_functions.h"
-#include "libresistance.h"
-#include "libpower.h"
-#include "libcomponent.h"
+#include "calculate_box.h"
 #include <stdlib.h>
+#include "coupling_box.h"
+#include "voltage_box.h"
 
 
 
@@ -70,31 +68,10 @@ gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array){
 void closeApp ( GtkWidget *window, gpointer data ) {
   gtk_main_quit();
 }
-GtkWidget* voltage_box_new(void){
-	GtkWidget *voltage;
-	GtkWidget *voltage_box;
 
-	voltage = gtk_entry_with_name_new("voltage");
-	voltage_box = gtk_vbox_new(FALSE, 2);
-	add_widget_with_label_vbox(GTK_CONTAINER(voltage_box), "Voltage (V):", voltage);
-	return voltage_box;
-}
 
-/**
- * @brief Retrieve voltage value from GUI entry field
- *
- * Retrieves float value of the voltage input box. The
- * function needs a reference/pointer to the GUI element.
- *
- * @param voltage_box GtkWidget GUI element voltage_box
- * @return float value of the current set voltage value in the GUI
- *
- */
-float get_voltage(GtkWidget* voltage_box){
-	float voltage_value = atof(gtk_entry_get_text(
-			GTK_ENTRY( (GtkWidget *) find_child(voltage_box, "voltage"))));
-	return voltage_value;
-}
+
+
 
 
 /**
@@ -120,6 +97,7 @@ gint main (gint argc, gchar *argv[]) {
 
 	gtk_init(&argc, &argv);
 
+	//Create main frame
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window), "Electrotest");
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
@@ -128,16 +106,19 @@ gint main (gint argc, gchar *argv[]) {
 
 	global_vbox = gtk_vbox_new(FALSE, 5);
 
+	//Create boxes for the data I/O
 	gui.voltage_box = voltage_box_new();
 	gui.coupling_box = coupling_box_new();
 	gui.resistor_box = resistor_box_new();
 	gui.calc_result_box = calc_result_box_new(gui_pt);
 	gui.resistor_values = resistor_values;
 
+	//Add coupling and voltage fields
 	upper_left_vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.voltage_box);
-	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.coupling_box);
+	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.voltage_box->voltage_box);
+	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.coupling_box->coupling_box);
 
+	
 	upper_hbox = gtk_hbox_new(FALSE, 5);
 	gtk_container_add(GTK_CONTAINER(upper_hbox),upper_left_vbox);
 	gtk_container_add(GTK_CONTAINER(upper_hbox),gui.resistor_box);
