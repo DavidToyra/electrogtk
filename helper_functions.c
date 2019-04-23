@@ -65,8 +65,10 @@ GtkWidget* add_widget_with_label_hbox(GtkContainer *box, gchar *caption, GtkWidg
  */
 GtkWidget* gtk_entry_with_name_new(gchar *name){
 	GtkWidget* entry;
+	printf("entry_with_name\n");
 	entry = gtk_entry_new();
 	gtk_widget_set_name(entry, name);
+	printf("set name done\n");
 	return entry;
 }
 
