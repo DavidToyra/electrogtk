@@ -13,6 +13,6 @@
  * @return GtkWidget* pointer to the new created Gui part.
  *
  */
-extern WtkWidget* coupling_box_new(void);
+extern GtkWidget* coupling_box_new(void);
 #endif
 

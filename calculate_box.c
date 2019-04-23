@@ -29,12 +29,12 @@ void button_clicked (GtkWidget *button, struct gui_comp* gui) {
 
 	// Get Data
 	update_resistor_values((*gui).resistor_box, (*gui).resistor_values);
-	float voltage = atof(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).voltage_box ), "voltage"));
+	float voltage = atof(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).voltage_box, "voltage"))));
 	char coupling;
-	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box), "coupling" )), "S"))
+	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling" )), "S")))
 	{
 		coupling = 'S';
-	} else if (strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box), "coupling" )), "P"))
+	} else if (strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling" )), "P")))
 	{
 		coupling = 'P';
 	}
