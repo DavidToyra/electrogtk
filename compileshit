@@ -1,3 +1,1 @@
-gcc -g electrogui.c calculate_box.c helper_functions.c coupling_box.c voltage_box.c -o electrotest -L/usr/local/lib -lresistance -lpower -lcomponent -Wl,-R/usr/local/lib -lm `pkg-config --cflags --libs gtk+-2.0`
-
-valgrind --leak-check=yes --show-reachable=yes --track-origins=yes ./electrotest
+gcc -g electrogui.c calculate_box.c helper_functions.c coupling_box.c -L/usr/local/lib -lresistance -lpower -lcomponent -Wl,-R/usr/local/lib -lm `pkg-config --cflags --libs gtk+-2.0`

@@ -4,10 +4,6 @@
 #include "helper_functions.h"
 
 
-typedef struct{
-	GtkWidget* voltage;
-	GtkWidget* voltage_box;
-} VoltageWidgets;
+extern GtkWidget* voltage_box_new(void);
 
-extern VoltageWidgets* voltage_box_new(void);
 #endif

@@ -65,10 +65,8 @@ GtkWidget* add_widget_with_label_hbox(GtkContainer *box, gchar *caption, GtkWidg
  */
 GtkWidget* gtk_entry_with_name_new(gchar *name){
 	GtkWidget* entry;
-	printf("entry_with_name\n");
 	entry = gtk_entry_new();
 	gtk_widget_set_name(entry, name);
-	printf("set name done\n");
 	return entry;
 }
 
@@ -92,7 +90,6 @@ GtkWidget* find_child(GtkWidget* parent, const gchar* name){
     	GtkWidget *child = gtk_bin_get_child(GTK_BIN(parent));
         return find_child(child, name);
     }
-
 
     if (GTK_IS_CONTAINER(parent)) {
     	GList *children = gtk_container_get_children(GTK_CONTAINER(parent));

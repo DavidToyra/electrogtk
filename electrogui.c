@@ -12,6 +12,33 @@
 char* const resistor_names[] = { "res1", "res2", "res3" };
 char* const resistor_labels[] = {"1:", "2:", "3:"};
 
+GtkWidget* find_label(GtkWidget* parent, const gchar* name)
+{
+	if (g_ascii_strcasecmp(gtk_widget_get_name((GtkWidget*)parent), (gchar*)name) == 0)
+	{
+		return parent;
+	}
+
+    if (GTK_IS_BIN(parent)) 
+	{
+    	GtkWidget *child = gtk_bin_get_child(GTK_BIN(parent));
+        return find_child(child, name);
+    }
+
+
+    if (GTK_IS_CONTAINER(parent)) 
+	{
+    	GList *children = gtk_container_get_children(GTK_CONTAINER(parent));
+    	do {
+    		GtkWidget* widget = find_child(children->data,name);
+    		if (widget != NULL) {
+    			return widget;
+    		}
+    	} while ((children = g_list_next(children)) != NULL);
+    }
+    return NULL;
+}
+
 /**
  * @brief Constructor for resistor_box GUI part
  *
@@ -94,33 +121,29 @@ gint main (gint argc, gchar *argv[]) {
 	struct gui_comp gui;
 	struct gui_comp* gui_pt = &gui;
 	gfloat resistor_values[3] = {1, 1, 1};
-	printf("line 17 before init\n");
 
 	gtk_init(&argc, &argv);
-	printf("after init\n");
+
 	//Create main frame
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window), "Electrotest");
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 	gtk_window_set_default_size(GTK_WINDOW(window),400, 250);
 	gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-	printf("created window\n");
+
 	global_vbox = gtk_vbox_new(FALSE, 5);
-	printf("created globalbox\n");
+
 	//Create boxes for the data I/O
 	gui.voltage_box = voltage_box_new();
-	printf("created voltage\n");
 	gui.coupling_box = coupling_box_new();
-	printf("created coupling\n");
 	gui.resistor_box = resistor_box_new();
-	printf("created resistor\n");
 	gui.calc_result_box = calc_result_box_new(gui_pt);
 	gui.resistor_values = resistor_values;
-	printf("after boxes\n");
+
 	//Add coupling and voltage fields
 	upper_left_vbox = gtk_vbox_new(FALSE, 5);
-	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.voltage_box->voltage_box);
-	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.coupling_box->coupling_box);
+	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.voltage_box);
+	gtk_container_add(GTK_CONTAINER(upper_left_vbox), gui.coupling_box);
 
 	
 	upper_hbox = gtk_hbox_new(FALSE, 5);

@@ -3,10 +3,6 @@
 #include <gtk/gtk.h>
 #include "helper_functions.h"
 
-typedef struct{
-	GtkWidget* coupling;
-	GtkWidget* coupling_box;
-} Couplings;
 
 /**
  * @brief Constructor for the Resistor Coupling Gui part
@@ -17,6 +13,6 @@ typedef struct{
  * @return GtkWidget* pointer to the new created Gui part.
  *
  */
-extern Couplings* coupling_box_new(void);
+extern WtkWidget* coupling_box_new(void);
 #endif
 

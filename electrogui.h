@@ -15,14 +15,14 @@
  * values.
  */
 struct gui_comp {
-	VoltageWidgets* voltage_box;
-	Couplings* coupling_box;
+	GtkWidget* voltage_box;
+	GtkWidget* coupling_box;
 	GtkWidget* resistor_box;
 	GtkWidget* calc_result_box;
 	float* resistor_values;
 };
 
-
+GtkWidget* find_label(GtkWidget* parent, const gchar* name);
 GtkWidget* resistor_box_new(void);
 gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array);
 #endif
