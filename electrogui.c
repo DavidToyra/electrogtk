@@ -22,7 +22,7 @@ GtkWidget* find_label(GtkWidget* parent, const gchar* name)
     if (GTK_IS_BIN(parent)) 
 	{
     	GtkWidget *child = gtk_bin_get_child(GTK_BIN(parent));
-        return find_child(child, name);
+        return find_label(child, name);
     }
 
 
@@ -30,7 +30,7 @@ GtkWidget* find_label(GtkWidget* parent, const gchar* name)
 	{
     	GList *children = gtk_container_get_children(GTK_CONTAINER(parent));
     	do {
-    		GtkWidget* widget = find_child(children->data,name);
+    		GtkWidget* widget = find_label(children->data,name);
     		if (widget != NULL) {
     			return widget;
     		}
@@ -54,10 +54,17 @@ GtkWidget* resistor_box_new(void){
 	upperrightvbox = gtk_vbox_new(FALSE, 5);
 
 
-	for(int i = 0; i < 3; i++){
-		add_widget_with_label_hbox(GTK_CONTAINER(upperrightvbox),
-				resistor_labels[i],
-				gtk_entry_with_name_new(resistor_names[i]));
+	for(int i = 0; i < 3; i++)
+	{
+		GtkWidget* entry = gtk_entry_new();
+		gtk_widget_set_name(entry, resistor_names[i]);
+		//add_widget_with_label_hbox(GTK_CONTAINER(upperrightvbox),resistor_labels[i], entry);
+		GtkWidget *label = gtk_label_new(resistor_labels[i]);
+  		GtkWidget *hbox = gtk_hbox_new(TRUE,2);
+
+  		gtk_container_add(GTK_CONTAINER(hbox), label);
+  		gtk_container_add(GTK_CONTAINER(hbox), entry);
+  		gtk_container_add(GTK_CONTAINER(upperrightvbox), hbox);
 	}
 
 	resistor_frame = gtk_frame_new("Resistors (Ohm)");
@@ -78,7 +85,7 @@ gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array){
 
 	for(int i = 0; i < 3; i++){
 		value_array[i] = (gfloat) atof(gtk_entry_get_text(
-				GTK_ENTRY( (GtkWidget *) find_child(resistor_box, resistor_names[i]))));
+				GTK_ENTRY( (GtkWidget *) find_label(resistor_box, resistor_names[i]))));
 	}
 
 	return value_array;

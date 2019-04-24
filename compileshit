@@ -1,1 +1,1 @@
-gcc -g electrogui.c calculate_box.c helper_functions.c coupling_box.c -L/usr/local/lib -lresistance -lpower -lcomponent -Wl,-R/usr/local/lib -lm `pkg-config --cflags --libs gtk+-2.0`
+gcc -g electrogui.c calculate_box.c voltage_box.c coupling_box.c -o electrotest libresistance.so libpower.so libcomponent.so `pkg-config --cflags --libs gtk+-2.0`

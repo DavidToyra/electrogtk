@@ -96,18 +96,32 @@ GtkWidget* calc_result_box_new(struct gui_comp* gui){
 	g_signal_connect(GTK_OBJECT(button), "clicked",
 		   GTK_SIGNAL_FUNC(button_clicked), (gpointer *) gui);
 
-
+	//Make replacement resistance box
 	result_resistance_box = gtk_vbox_new(FALSE, 2);
 	result_resistance = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(result_resistance), FALSE);
-	add_widget_with_label_vbox(GTK_CONTAINER(result_resistance_box),"Replacement Resistance (Ohm)", result_resistance);
+	//add_widget_with_label_vbox(GTK_CONTAINER(result_resistance_box),"Replacement Resistance (Ohm)", result_resistance);
+	GtkWidget *label = gtk_label_new("Replacement Resistance (Ohm)");
+  	GtkWidget *vbox = gtk_vbox_new(TRUE, 2);
+
+  	gtk_container_add(GTK_CONTAINER(vbox), label);
+  	gtk_container_add(GTK_CONTAINER(vbox), result_resistance);
+  	gtk_container_add(GTK_CONTAINER(result_resistance_box), vbox);
 	gtk_container_add(GTK_CONTAINER(hbox), result_resistance_box);
 
+	//Make power box
 	result_power_box = gtk_vbox_new(FALSE, 2);
 	result_power = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(result_power), FALSE);
 
-	add_widget_with_label_vbox(GTK_CONTAINER(result_power_box),"Power (W)", result_power);
+	//add_widget_with_label_vbox(GTK_CONTAINER(result_power_box),"Power (W)", result_power);
+	GtkWidget *power_label = gtk_label_new("Power (W)");
+	GtkWidget *powervbox = gtk_vbox_new(TRUE, 2);
+	
+	gtk_container_add(GTK_CONTAINER(vbox), power_label);
+	gtk_container_add(GTK_CONTAINER(vbox), result_power);
+	gtk_container_add(GTK_CONTAINER(result_power_box), powervbox);
+	
 	gtk_container_add(GTK_CONTAINER(hbox), result_power_box);
 
 	halign = gtk_alignment_new(0, 0, 0, 0);
