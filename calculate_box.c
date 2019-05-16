@@ -31,15 +31,17 @@ void button_clicked (GtkWidget *button, struct gui_comp* gui) {
 	update_resistor_values((*gui).resistor_box, (*gui).resistor_values);
 	float voltage = atof(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).voltage_box, "voltage"))));
 	char coupling;
-	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "S")
-	 || strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "s"))
+	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "S") == 0
+	 || strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "s") == 0)
 	{
 		coupling = 'S';
+		printf("coupling = %s\n", gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))));
 	} 
 	else if (strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))) , "P")
 	 || strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))) , "p"))
 	{
 		coupling = 'P';
+		printf("coupling = %s\n", gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))));
 	}
 
 	//Calculate resistance and power

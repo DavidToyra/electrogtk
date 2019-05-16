@@ -1,3 +1,9 @@
+/*
+ * @file electrogui.h
+ * @author David Töyrä
+ * @date 26 april 2019
+ * @brief headerfile for main program that assembles and runs the GUI.
+ */
 #ifndef ELECTROGUI_H_
 #define ELECTROGUI_H_
 #include <gtk/gtk.h>
