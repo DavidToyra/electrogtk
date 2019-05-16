@@ -1,3 +1,10 @@
+/*
+ * @file calculate_box.c
+ * @author David Töyrä
+ * @date 26 april 2019
+ * @brief A gtk box containing the calculate functionality of electrotest.
+ */
+ 
 #include <gtk/gtk.h>
 #include "calculate_box.h"
 #include "voltage_box.h"
@@ -9,48 +16,44 @@
 GtkWidget* result_power;
 GtkWidget* result_resistance;
 
-
-
 /**
- * @brief callback function for calculation button
+ * @brief on click listener for the calculate button
+ * calculates resistance and power with the library functions.
  *
- * Function uses the electrotest libraries to calculate the replacement
- * resistor and power. Currently, no additional error handling over the
- * libraries is implemented. The function takes a struct with pointers
- * to the relevant gui parts and the data array that contains the
- * resistor values.
- *
- * @param button The button widget to which the callback relates.
+ * @param button calculate button
  * @param gui A struct that contains pointers to all gui parts and to the
  * array which contains the resistor values.
  *
  */
 void button_clicked (GtkWidget *button, struct gui_comp* gui) {
 
-	// Get Data
+	//Get data from voltage and coupling boxes
 	update_resistor_values((*gui).resistor_box, (*gui).resistor_values);
 	float voltage = atof(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).voltage_box, "voltage"))));
 	char coupling;
-	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "S"))
+	if(strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "S")
+	 || strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))), "s"))
 	{
 		coupling = 'S';
-	} else if (strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))) , "P"))
+	} 
+	else if (strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))) , "P")
+	 || strcmp(gtk_entry_get_text(GTK_ENTRY(find_label((*gui).coupling_box, "coupling"))) , "p"))
 	{
 		coupling = 'P';
 	}
 
-	// Calculate
+	//Calculate resistance and power
 	float resistance = calc_resistance(3, coupling, (*gui).resistor_values);
 	float power =  calc_power_r(voltage, resistance);
 
-	// Convert Result to strings
+	//Convert result to strings
 	char res_resistance[10];
 	sprintf(res_resistance, "%.2f",resistance);
 
 	char res_power[10];
 	sprintf(res_power, "%.2f",power);
 
-	// Publish results
+	//Publish results
 	gtk_entry_set_text(GTK_ENTRY(result_resistance), res_resistance);
 	gtk_entry_set_editable(GTK_ENTRY(result_resistance), FALSE);
 	gtk_entry_set_text(GTK_ENTRY(result_power), res_power);
@@ -62,13 +65,12 @@ void button_clicked (GtkWidget *button, struct gui_comp* gui) {
 
 /**
  * @brief Constructor of the lower GUI part.
- *
- * This part of the GUI contains the calculation button and
- * the result boxes.
+ * 
+ * Contains the calculate button and the output of power and resistance.
  *
  * @param gui A struct that contains pointers to all gui parts and to the
  * array which contains the resistor values.
- * @return GtkWidget* Pointer to the constructed and wired-up GUI part
+ * @return GtkWidget* pointer to the widget with the calculate box.
  *
  */
 GtkWidget* calc_result_box_new(struct gui_comp* gui){
@@ -81,13 +83,13 @@ GtkWidget* calc_result_box_new(struct gui_comp* gui){
 	GtkWidget* result_resistance_box;
 	GtkWidget* result_power_box;
 
+	//Make main box for the calculate function
 	lower_vbox = gtk_vbox_new(FALSE, 5);
 	valign = gtk_alignment_new(0, 1, 0, 0);
 	gtk_container_add(GTK_CONTAINER(lower_vbox), valign);
-
-
 	hbox = gtk_hbox_new(TRUE, 3);
 
+	//Make button and add callback funtion to it
 	button = gtk_button_new_with_label("Calculate");
 	gtk_widget_set_size_request(button, 70, 30);
 	gtk_container_add(GTK_CONTAINER(hbox), button);
@@ -100,7 +102,6 @@ GtkWidget* calc_result_box_new(struct gui_comp* gui){
 	result_resistance_box = gtk_vbox_new(FALSE, 2);
 	result_resistance = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(result_resistance), FALSE);
-	//add_widget_with_label_vbox(GTK_CONTAINER(result_resistance_box),"Replacement Resistance (Ohm)", result_resistance);
 	GtkWidget *label = gtk_label_new("Replacement Resistance (Ohm)");
   	GtkWidget *vbox = gtk_vbox_new(TRUE, 2);
 
@@ -113,15 +114,12 @@ GtkWidget* calc_result_box_new(struct gui_comp* gui){
 	result_power_box = gtk_vbox_new(FALSE, 2);
 	result_power = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(result_power), FALSE);
-
-	//add_widget_with_label_vbox(GTK_CONTAINER(result_power_box),"Power (W)", result_power);
 	GtkWidget *power_label = gtk_label_new("Power (W)");
 	GtkWidget *powervbox = gtk_vbox_new(TRUE, 2);
 	
 	gtk_container_add(GTK_CONTAINER(vbox), power_label);
 	gtk_container_add(GTK_CONTAINER(vbox), result_power);
 	gtk_container_add(GTK_CONTAINER(result_power_box), powervbox);
-	
 	gtk_container_add(GTK_CONTAINER(hbox), result_power_box);
 
 	halign = gtk_alignment_new(0, 0, 0, 0);

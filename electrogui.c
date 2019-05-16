@@ -1,3 +1,9 @@
+/*
+ * @file electrogui.c
+ * @author David Töyrä
+ * @date 26 april 2019
+ * @brief main program that assembles and runs the GUI.
+ */
 #include "electrogui.h"
 #include <stdio.h>
 #include <string.h>
@@ -12,12 +18,24 @@
 char* const resistor_names[] = { "res1", "res2", "res3" };
 char* const resistor_labels[] = {"1:", "2:", "3:"};
 
+/**
+ * @brief Searches for a gtklabel by a name from a parent widget.
+ * 
+ * Recursively traverses the list of child widgets from a parent
+ * until it has found the widget by a name that is searched.
+ * 
+ * @param parent widget to start searching from.
+ * @param name string that represents name of the widget being searched
+ * @return gtkwidget matching the name
+ */
 GtkWidget* find_label(GtkWidget* parent, const gchar* name)
 {
+	//Check if name matches
 	if (g_ascii_strcasecmp(gtk_widget_get_name((GtkWidget*)parent), (gchar*)name) == 0)
 	{
 		return parent;
 	}
+
 
     if (GTK_IS_BIN(parent)) 
 	{
@@ -26,6 +44,7 @@ GtkWidget* find_label(GtkWidget* parent, const gchar* name)
     }
 
 
+	//Get list of children and call this function again.
     if (GTK_IS_CONTAINER(parent)) 
 	{
     	GList *children = gtk_container_get_children(GTK_CONTAINER(parent));
@@ -40,7 +59,7 @@ GtkWidget* find_label(GtkWidget* parent, const gchar* name)
 }
 
 /**
- * @brief Constructor for resistor_box GUI part
+ * @brief Constructor for the three resistor fields GUI.
  *
  * This GUI part contains three resistor input field.
  *
@@ -58,7 +77,6 @@ GtkWidget* resistor_box_new(void){
 	{
 		GtkWidget* entry = gtk_entry_new();
 		gtk_widget_set_name(entry, resistor_names[i]);
-		//add_widget_with_label_hbox(GTK_CONTAINER(upperrightvbox),resistor_labels[i], entry);
 		GtkWidget *label = gtk_label_new(resistor_labels[i]);
   		GtkWidget *hbox = gtk_hbox_new(TRUE,2);
 
@@ -85,7 +103,7 @@ gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array){
 
 	for(int i = 0; i < 3; i++){
 		value_array[i] = (gfloat) atof(gtk_entry_get_text(
-				GTK_ENTRY( (GtkWidget *) find_label(resistor_box, resistor_names[i]))));
+		GTK_ENTRY( (GtkWidget *) find_label(resistor_box, resistor_names[i]))));
 	}
 
 	return value_array;
@@ -97,26 +115,18 @@ gfloat* update_resistor_values(GtkWidget* resistor_box, gfloat *value_array){
  * Function to close main GTK application window.
  *
  * @param window, pointer to the main window widget
- * @param data, pointer for extra data, not used
  */
-void closeApp ( GtkWidget *window, gpointer data ) {
+void closeApp ( GtkWidget *window) {
   gtk_main_quit();
 }
 
 
-
-
-
-
 /**
- * @brief Main of electrotestgtk Application
+ * @brief main function for the electrotest gui.
  *
- * Application GTK+ gui frontend for electrotest libraries.
- * The Main file constructs the GUI by calling the three respective
- * constructor functions. Interfacing to the libraries happens
- * mostly in the calc_results_box gui part. Currently the application
- * does not implement advanced user input validation and relies on
- * the functionality in the libraries.  *
+ * Uses GTK+ v2.0 library for the graphical interface. Creates the meain window
+ * and then the gtk widgets one by one and adds them to the main window.
+ * 
  */
 gint main (gint argc, gchar *argv[]) {
 
