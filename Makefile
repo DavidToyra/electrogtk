@@ -6,11 +6,22 @@
 
 CC = gcc
 
-all: lib
+all: electrotest
 
+electrotest: electrotest.o
+	$(CC) electrotest.o -o electrotest -L/usr/bin -lresistance -lpower -lcomponent -Wl,-R/usr/bin -lm
+
+electrotest.o: src/electrotest.c src/libresistance/libresistance.h src/libpower/libpower.h src/libcomponent/libcomponent.h
+	$(CC) -c src/electrotest.c -o electrotest.o -lm
+
+library: libcomponent.o libresistance.o libpower.o
+	mkdir lib
+	$(CC) libresistance.o -shared -o lib/libresistance.so -lm
+	$(CC) libpower.o -shared -o lib/libpower.so -lm
+	$(CC) libcomponent.o -shared -o lib/libcomponent.so -lm
 
 libresistance.o: src/libresistance/libresistance.c src/libresistance/libresistance.h
-	$(CC) -c -fpic src/libresistance/libresistance.c -o libresistance.o -lm
+	$(CC) -c -fpic src/libresistance/libresistance.c -o libresistance.o
 
 libpower.o: src/libpower/libpower.c src/libpower/libpower.h
 	$(CC) -c -fpic src/libpower/libpower.c -o libpower.o -lm
@@ -23,14 +34,13 @@ lib: libresistance.o libpower.o libcomponent.o
 	$(CC) libpower.o -shared -o libpower.so -lm
 	$(CC) libcomponent.o -shared -o libcomponent.so -lm
 
-install: lib
+install: electrotest
 	mkdir -p $(DESTDIR)/usr/bin
-	install libresistance.so libpower.so libcomponent.so $(DESTDIR)/usr/bin
+	install electrotest $(DESTDIR)/usr/bin
 	
 
 clean:
 	rm -rf *.o *.so
-	rm -rf src/lib
 
 uninstall:
-	rm /usr/bin/libresistance.so /usr/bin/libpower.so /usr/bin/libcomponent.so
+	rm -f $(DESTDIR)/usr/bin/electrotest
